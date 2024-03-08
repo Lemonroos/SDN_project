@@ -1,47 +1,24 @@
 import React from "react";
+import { Layout } from "antd";
+
+const { Footer } = Layout;
 
 const AppFooter = () => {
   return (
-    <footer
+    <Footer
       style={{
-        backgroundColor: "#000",
+        backgroundColor: "#101010", // A dark shade for the footer
         color: "#fff",
-        padding: "20px 0",
-        position: "fixed",
-        bottom: "0",
+        textAlign: "center", // Centers the text
+        lineHeight: "15px", // Adjusts the line height for vertical alignment
+        position: "fixed", // Fixes the footer to the bottom
+        bottom: 0,
         width: "100%",
-        borderTop: "3px solid #f8f9fa",
+        zIndex: 10, // Ensures the footer stays above other content
       }}
     >
-      <div
-        style={{
-          display: "flex",
-          justifyContent: "space-around",
-          alignItems: "center",
-          fontFamily: "Arial, sans-serif",
-        }}
-      >
-        <div>
-          <h3
-            style={{
-              fontSize: "1.5em",
-              marginBottom: "0.5em",
-              color: "#f8f9fa",
-            }}
-          >
-            HomeTalk
-          </h3>
-          <p style={{ margin: "0", color: "#ddd" }}>
-            Details about your project...
-          </p>
-        </div>
-        <div>
-          <p style={{ margin: "0", color: "#ddd" }}>
-            © 2024 HomeTalk. All rights reserved.
-          </p>
-        </div>
-      </div>
-    </footer>
+      © 2024 Life House. All rights reserved.
+    </Footer>
   );
 };
 
