@@ -120,7 +120,6 @@ import AppFooter from "../Components/footer";
 // import MySpin from '../Components/UI/spin';
 export default function CustomerLayout() {
   const [user, setUser] = useState(null);
-  const [loading,setLoading] = useState(true);
   useEffect(() => {
     const getUser = () => {
       fetch("http://localhost:5000/auth/user/login/success", {
@@ -138,14 +137,13 @@ export default function CustomerLayout() {
         })
         .then((resObject) => {
           setUser(resObject.user);
-          setLoading(!loading);
         })
         .catch((err) => {
           console.log(err);
         });
     };
     getUser();
-  }, [!user && loading]);
+  }, []);
   // console.log(user);
   // if(!user && loading) {
   //   <MySpin/>
@@ -154,7 +152,7 @@ export default function CustomerLayout() {
     <>
       <AppHeader />
       {/* <SiderComponent /> */}
-      <div style={{padding:"100px 200px", backgroundColor:"#F9E4BC"}}>
+      <div style={{padding:"100px 200px", backgroundColor:"#f5f5f5"}}>
 
       <Outlet />
       </div>

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Form, Input, Button, Checkbox } from 'antd';
+import { Form, Input, Button, Checkbox, Card } from 'antd';
 import { Link } from 'react-router-dom';
 import axios from 'axios'
 const Login = () => {
@@ -34,6 +34,7 @@ const Login = () => {
 
   return (
     <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
+       <Card >
       <Form
         name="basic"
         initialValues={{ remember: true }}
@@ -70,6 +71,7 @@ const Login = () => {
           Don't have an account? <Link to="/register">Register</Link>
         </div>
       </Form>
+      </Card>
     </div>
   );
 };

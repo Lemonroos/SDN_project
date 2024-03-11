@@ -6,7 +6,10 @@ const contractRouter = express.Router();
 contractRouter
   .route("/")
   .get(contractController.getAll)
-  .post(contractController.create);
+  .post(verifyToken, contractController.create);
+contractRouter
+  .route("/check-if-project-exists")
+  .get(verifyToken,contractController.checkIfProjectExists);
 contractRouter
   .route("/:Id")
   .get(contractController.getById)

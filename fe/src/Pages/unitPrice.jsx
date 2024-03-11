@@ -53,7 +53,7 @@ console.log(constructionItems);
   // Create columns dynamically based on package types
   const columnsTypes = [
     {
-      title: '',
+      title: 'Name',
       dataIndex: 'name',
       key: 'name',
     },

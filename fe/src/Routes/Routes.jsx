@@ -11,15 +11,16 @@ import ContactUs from "../Pages/contact";
 import ProjectDetail from "../Pages/projectDetail";
 import MyContracts from "../Pages/Customer/myContract";
 import MyContractDetail from "../Pages/Customer/myContractDetail";
-import CreateContract from "../Pages/Customer/createContract";
 import Checkout from "../Pages/Customer/checkout";
 import ManagerLayout from "../Layouts/managerLayout";
 import CreateProject from "../Pages/createProject";
+import UpdateProject from "../Pages/Customer/updateProject";
 import QuoteDetails from "../Pages/Customer/quoteDetail";
 import Dashboard from "../Pages/Manager/dashBoard";
 import Contracts from "../Pages/Manager/contracts";
 import ContractDetail from "../Pages/Manager/contractDetail";
 import UnitPrice from "../Pages/unitPrice";
+import PrivateRoute from "../Config/RoleBasedRoutes";
 export const routes = createBrowserRouter([
   {
     path: "/", //chung
@@ -45,11 +46,15 @@ export const routes = createBrowserRouter([
       },
       {
         path: "createproject",
-        element: <CreateProject />,
+        element: <PrivateRoute requiredRoles={['Customer']}><CreateProject /></PrivateRoute>,//
+      },
+      {
+        path: "projects/update/:id",
+        element: <PrivateRoute requiredRoles={['Customer']}><UpdateProject /></PrivateRoute>,//
       },
       {
         path: "quote/:id",
-        element: <QuoteDetails />,
+        element: <PrivateRoute requiredRoles={['Customer']}><QuoteDetails /></PrivateRoute>,
       },
       {
         path: "aboutus",
@@ -69,33 +74,29 @@ export const routes = createBrowserRouter([
       },
       {
         path: "unitprice",
-        element: <UnitPrice />,
+        element: <UnitPrice />,//
       },
     ],
   },
   {
     path: "/mycontracts", //customer
-    element: <RootLayout />,
+    element: <PrivateRoute requiredRoles={['Customer']}><RootLayout /></PrivateRoute>,
 
     errorElement: <Error />,
     children: [
       {
         index: true,
-        element: <MyContracts />,
+        element: <MyContracts />,//
       },
       {
         path: "detail/:id",
-        element: <MyContractDetail />,
-      },
-      {
-        path: "createcontracts",
-        element: <CreateContract />, 
+        element: <MyContractDetail />,//
       },
     ],
   },
   {
     path: "/manager", //manager
-    element: <ManagerLayout />,
+    element: <PrivateRoute requiredRoles={['Manager']}><ManagerLayout /></PrivateRoute>,
     errorElement: <Error />,
     children: [
       {
@@ -107,7 +108,7 @@ export const routes = createBrowserRouter([
         element: <Contracts />, //table list all
       },
       {
-        path: "contracts/detail",
+        path: "contracts/detail/:id",
         element: <ContractDetail />, //detail of a contract for approve or denied
       },
     ],

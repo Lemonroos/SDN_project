@@ -18,6 +18,19 @@ class ProjectController {
         res.status(500).json(error);
       });
   }
+
+  getProjectsByUserId(req, res, next) {
+    Projects.find({ userId: req.user.id, status: true })
+      .populate("constructionType")
+      .populate("constructionItemsOrder.constructionItem")
+      .then((projects) => {
+        res.status(200).json(projects);
+      })
+      .catch((error) => {
+        console.error(error);
+        res.status(500).json(error);
+      });
+  }
   getById(req, res, next) {
     const projectId = req.params.Id;
     Projects.findOne({ _id: projectId, status: true })
@@ -64,6 +77,7 @@ class ProjectController {
         packageCost: packageCost,
         totalItemsCost: totalItemsCost,
         constructionItemsOrder: req.body.constructionItemsOrder,
+        userId: req.user.id
       });
 
       await project.save();
@@ -83,7 +97,7 @@ class ProjectController {
   async updateById(req, res, next) {
     try {
       // Find the project
-      let project = await Projects.findById(req.params.Id);
+      let project = await Projects.findOne({_id: req.params.Id, userId: req.user.id});
       if (!project) {
         return res.status(404).json("Project not found");
       }
@@ -123,8 +137,8 @@ class ProjectController {
       await Promise.all(itemCostPromises);
 
       // Update the project
-      project = await Projects.findByIdAndUpdate(
-        req.params.Id,
+      project = await Projects.findOneAndUpdate(
+        {_id: req.params.Id, userId: req.user.id},
         {
           ...req.body,
           packageCost: packageCost,
@@ -151,8 +165,8 @@ class ProjectController {
     }
   }
   delete(req, res, next) {
-    Projects.findByIdAndUpdate(
-      req.params.Id,
+    Projects.findOneAndUpdate(
+      {_id: req.params.Id, userId: req.user.id},
       {
         $set: { status: false },
       },

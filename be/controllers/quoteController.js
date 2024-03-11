@@ -77,7 +77,7 @@ class QuoteController {
         total: total
       }, { new: true });  // option { new: true } ensures the updated document is returned
   
-      res.status(200).json('Updated success');
+      res.status(200).json(quote);
     } catch (error) {
       next(error);
     }

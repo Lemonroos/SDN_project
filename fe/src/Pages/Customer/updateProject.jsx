@@ -1,8 +1,12 @@
 import React, {useState, useEffect} from 'react';
-import { Form, Input, Button, DatePicker, InputNumber, Space, Select, List, Row, Col } from 'antd';
+import { Form, Input, Button, DatePicker, InputNumber, Space, Select, List } from 'antd';
 import { MinusCircleOutlined, PlusOutlined } from '@ant-design/icons';
+import { useParams } from 'react-router-dom';
 import axios from 'axios';
-const CreateProject = () => {
+import moment from 'moment'
+const UpdateProject = () => {
+  const [form] = Form.useForm();
+  const { id } = useParams();
   const {Option} = Select
   const [constructionTypes, setConstructionTypes] = useState([])
   const [constructionItems, setConstructionItems] = useState([])
@@ -26,8 +30,23 @@ const CreateProject = () => {
         console.log(error)
       })
     }
+    const getProjectById = async() => {
+      axios.get(`http://localhost:5000/projects/${id}`)
+      .then(res => {
+        form.setFieldsValue({
+          ...res.data,
+          startDate: moment(res.data.startDate),
+          constructionItemsOrder: res.data.constructionItemsOrder.map(item => ({
+            ...item,
+            constructionItem: item.constructionItem._id
+          }))
+        });
+      })
+      .catch(err => console.error(err));
+    }
     getContructionTypes();
     getConstructionItems();
+    getProjectById();
   }, [])
   const handleSelectChange = (value, name) => {
     setSelectedItems(prevState => [...prevState, value]);
@@ -37,12 +56,10 @@ const CreateProject = () => {
     setSelectedItems(prevState => prevState.filter(item => item !== name));
   };
   const onFinish = (values) => {
-    console.log('Received values of form:', values);
-    axios.post('http://localhost:5000/projects', values, {withCredentials: true})
+    axios.put(`http://localhost:5000/projects/${id}`, values, {withCredentials: true})
     .then((res) => {
-      console.log(res.data)
       const id = res.data._id
-      alert('Created successfully')
+      alert('Updated successfully')
       window.location = (`/quote/${id}`)
     })
     .catch((error) => {
@@ -51,7 +68,7 @@ const CreateProject = () => {
   };
 
   return (
-    <Form name="dynamic_form_nest_item" onFinish={onFinish} autoComplete="off" labelCol={{ span: 3 }} labelAlign="left">
+    <Form name="dynamic_form_nest_item" form={form} onFinish={onFinish} autoComplete="off">
       <Form.Item
         name="name"
         label="Name"
@@ -149,4 +166,4 @@ const CreateProject = () => {
   );
 };
 
-export default CreateProject;
+export default UpdateProject;

@@ -54,6 +54,9 @@ const projectSchema = new Schema(
       //Tong gia tri cac vat lieu da chon (so bo)
       type: Number,
     },
+    userId: {
+      type: String,
+    },
     status: {
       type: Boolean,
       required: true,

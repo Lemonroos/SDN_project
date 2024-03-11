@@ -63,11 +63,8 @@ export default function MyContract() {
   return (
     <div style={{ padding: "20px", paddingTop: "60px", paddingBottom: "60px" }}>
       <Space style={{ marginBottom: "20px" }}>
-        <Button type="primary">
-          <Link to="/createcontract">Create New Contract</Link>
-        </Button>
       </Space>
-      <Table columns={columns} dataSource={data} />
+      <Table columns={columns} dataSource={data} pagination={false}/>
     </div>
   );
 }

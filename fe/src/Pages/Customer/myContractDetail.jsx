@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, Link } from "react-router-dom";
 import axios from "axios";
-import { Descriptions, Card, List } from "antd";
+import { Descriptions, Card, List, Button, Divider } from "antd";
 import MySpin from "../../Components/UI/spin";
 
 export default function MyContractDetail() {
@@ -30,6 +30,11 @@ export default function MyContractDetail() {
     <div
       style={{ padding: "200px", paddingTop: "60px", paddingBottom: "60px" }}
     >
+      <Link to={`/projects/detail/${contract.quote.project._id}`}>
+        <Button type="primary" style={{ marginBottom: "10px" }}>
+          View project detail{" "}
+        </Button>
+      </Link>
       <Card title={contract.quote.project.name}>
         <Descriptions column={1}>
           <Descriptions.Item>
@@ -88,6 +93,9 @@ export default function MyContractDetail() {
             {contract.quote.total}
           </Descriptions.Item>
         </Descriptions>
+      </Card>
+      <Divider />
+      <Card>
         <h3>Construction Items Order:</h3>
         <List
           itemLayout="horizontal"

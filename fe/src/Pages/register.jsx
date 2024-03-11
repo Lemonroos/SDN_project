@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Form, Input, Button, Select } from "antd";
+import { Form, Input, Button, Select,Card } from "antd";
 import {useNavigate} from 'react-router-dom'
 import axios from 'axios'
 const Register = () => {
@@ -41,6 +41,7 @@ const years = Array.from({length: 100}, (_, i) => currentYear - i);
         height: "100vh",
       }}
     >
+      <Card>
       <Form
         name="register"
         onFinish={onFinish}
@@ -118,6 +119,7 @@ const years = Array.from({length: 100}, (_, i) => currentYear - i);
           </Button>
         </Form.Item>
       </Form>
+      </Card>
     </div>
   );
 };

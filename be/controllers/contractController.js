@@ -1,5 +1,5 @@
 const Contracts = require("../models/Contract");
-const {verifyToken} = require('../config/verify')
+const { verifyToken } = require("../config/verify");
 class ContractController {
   getAll(req, res, next) {
     Contracts.find({})
@@ -16,6 +16,27 @@ class ContractController {
         res.status(500).json(error);
       });
   }
+  checkIfProjectExists(req, res, next) {
+    const projectId = req.query.projectId;
+    Contracts.find({ user: req.user.id })
+    .populate({
+      path: "quote",
+      populate: { path: "project" },
+    })
+      .then((contracts) => {
+        let flag = false;
+        contracts.forEach((contract) => {
+          if (contract.quote.project._id.toString() === projectId.toString()) {
+          flag = true;
+          }
+        })
+        return res.status(200).json(flag);
+      })
+      .catch((error) => {
+        console.log(error);
+        res.status(500).json(error);
+      });
+  }
   getById(req, res, next) {
     const contractId = req.params.Id;
     Contracts.findOne({ _id: contractId })
@@ -25,7 +46,10 @@ class ContractController {
       })
       .populate({
         path: "quote",
-        populate: { path: "project", populate: { path: "constructionItemsOrder.constructionItem" } },
+        populate: {
+          path: "project",
+          populate: { path: "constructionItemsOrder.constructionItem" },
+        },
       })
       .populate("user")
       .then((contract) => {
@@ -37,14 +61,17 @@ class ContractController {
       });
   }
   getByUserId(req, res, next) {
-    Contracts.find({ user: req.user.id})
+    Contracts.find({ user: req.user.id })
       .populate({
         path: "quote",
         populate: { path: "project", populate: { path: "constructionType" } },
       })
       .populate({
         path: "quote",
-        populate: { path: "project", populate: { path: "constructionItemsOrder.constructionItem" } },
+        populate: {
+          path: "project",
+          populate: { path: "constructionItemsOrder.constructionItem" },
+        },
       })
       .populate("user")
       .then((contract) => {
@@ -56,11 +83,13 @@ class ContractController {
       });
   }
   create(req, res, next) {
-    const contract = new Contracts(req.body);
+    const contract = new Contracts({
+      quote: req.body.quote,
+      user: req.user.id,
+    });
     Contracts.findOne({
-      quote: contract.quote,
-      user: contract.user,
-      status: true,
+      quote: req.body.quote,
+      user: req.user.id,
     })
       .then((existContract) => {
         if (existContract) {
@@ -69,7 +98,7 @@ class ContractController {
           return contract
             .save()
             .then(() => {
-              res.status(200).json("Created successfully");
+              res.status(200).json(contract);
             })
             .catch(next);
         }
@@ -77,28 +106,15 @@ class ContractController {
       .catch(next);
   }
   updateById(req, res, next) {
-    const Id = req.params.Id;
-    Contracts.findOne({
-      _id: { $ne: Id },
-    })
-      .then((existingData) => {
-        if (existingData) {
-          return res.status(404).json("The contract has already exist");
-        }
-        return Contracts.findByIdAndUpdate(
-          { _id: req.params.Id },
-          {
-            $set: req.body,
-          },
-          { new: true }
-        )
-          .then(() => {
-            res.status(200).json("Updated successfully!");
-          })
-          .catch((error) => {
-            console.log(error);
-            res.status(500).json(error);
-          });
+    Contracts.findByIdAndUpdate(
+      { _id: req.params.Id },
+      {
+        $set: req.body,
+      },
+      { new: true }
+    )
+      .then(() => {
+        res.status(200).json("Updated successfully!");
       })
       .catch((error) => {
         console.log(error);

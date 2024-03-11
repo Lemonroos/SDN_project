@@ -29,6 +29,18 @@ export default function QuoteDetail() {
     getQuote();
   }, [id]);
 
+  const createContract = async() => {
+    await axios.post('http://localhost:5000/contracts', {quote: id}, {withCredentials: true})
+    .then((res) => {      
+        alert('Create successfully')
+        const contractId = res.data._id
+        window.location = (`/mycontracts/detail/${contractId}`)
+    }
+    ).catch((err) => {
+      alert(err.response.data)
+    })
+  }
+
   if (!quote) {
     return <MySpin />;
   }
@@ -94,7 +106,7 @@ export default function QuoteDetail() {
           <Descriptions.Item label="Total">{quote.total}</Descriptions.Item>
         </Descriptions>
       </Card>
-      <Button>Create Contract</Button>
+      <Button onClick={createContract}>Create Contract</Button>
     </div>
   );
 }

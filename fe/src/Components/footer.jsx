@@ -14,7 +14,7 @@ const AppFooter = () => {
         position: "fixed", // Fixes the footer to the bottom
         bottom: 0,
         width: "100%",
-        zIndex: 10, // Ensures the footer stays above other content
+        zIndex: 20, // Ensures the footer stays above other content
       }}
     >
       © 2024 Life House. All rights reserved.
