@@ -2,24 +2,27 @@ import { createBrowserRouter } from "react-router-dom";
 import RootLayout from "../Layouts/rootLayout";
 import Home from "../Pages/homePage";
 import News from "../Pages/news";
-import DeployedContract from "../Pages/deployedContract";
+import Projects from "../Pages/projects";
 import AboutUs from "../Pages/aboutUs";
 import Login from "../Pages/login";
 import Register from "../Pages/register";
 import Error from "../Pages/errorPage";
 import ContactUs from "../Pages/contact";
-import MyContract from "../Pages/Customer/myContract";
+import ProjectDetail from "../Pages/projectDetail";
+import MyContracts from "../Pages/Customer/myContract";
 import MyContractDetail from "../Pages/Customer/myContractDetail";
-import CustomerLayout from "../Layouts/customerLayout";
-import Create from "../Pages/Customer/create";
+import CreateContract from "../Pages/Customer/createContract";
 import Checkout from "../Pages/Customer/checkout";
-import AdminLayout from "../Layouts/adminLayout";
-import Dashboard from "../Pages/Admin/dashBoard";
-import Contracts from "../Pages/Admin/contracts";
-import ContractDetail from "../Pages/Admin/contractDetail";
+import ManagerLayout from "../Layouts/managerLayout";
+import CreateProject from "../Pages/createProject";
+import QuoteDetails from "../Pages/Customer/quoteDetail";
+import Dashboard from "../Pages/Manager/dashBoard";
+import Contracts from "../Pages/Manager/contracts";
+import ContractDetail from "../Pages/Manager/contractDetail";
+import UnitPrice from "../Pages/unitPrice";
 export const routes = createBrowserRouter([
   {
-    path: "/",
+    path: "/", //chung
     element: <RootLayout />,
 
     errorElement: <Error />,
@@ -33,8 +36,20 @@ export const routes = createBrowserRouter([
         element: <News />,
       },
       {
-        path: "contracts",
-        element: <DeployedContract />,
+        path: "projects",
+        element: <Projects />,//
+      },
+      {
+        path: "projects/detail/:id",
+        element: <ProjectDetail />,//
+      },
+      {
+        path: "createproject",
+        element: <CreateProject />,
+      },
+      {
+        path: "quote/:id",
+        element: <QuoteDetails />,
       },
       {
         path: "aboutus",
@@ -42,46 +57,45 @@ export const routes = createBrowserRouter([
       },
       {
         path: "login",
-        element: <Login />,
+        element: <Login />,//
       },
       {
         path: "register",
-        element: <Register />,
+        element: <Register />,//
       },
       {
         path: "contact",
         element: <ContactUs />,
       },
+      {
+        path: "unitprice",
+        element: <UnitPrice />,
+      },
     ],
   },
   {
-    path: "/mycontracts",
-    element: <CustomerLayout />,
+    path: "/mycontracts", //customer
+    element: <RootLayout />,
 
     errorElement: <Error />,
     children: [
       {
         index: true,
-        element: <MyContract />,
+        element: <MyContracts />,
       },
-
       {
-        path: "details",
+        path: "detail/:id",
         element: <MyContractDetail />,
       },
       {
-        path: "create",
-        element: <Create />,
-      },
-      {
-        path: "checkout",
-        element: <Checkout />,
+        path: "createcontracts",
+        element: <CreateContract />, 
       },
     ],
   },
   {
-    path: "/admin",
-    element: <AdminLayout />,
+    path: "/manager", //manager
+    element: <ManagerLayout />,
     errorElement: <Error />,
     children: [
       {
@@ -89,14 +103,12 @@ export const routes = createBrowserRouter([
         element: <Dashboard />,
       },
       {
-        path: "contract",
-        element: <Contracts />,
-        children: [
-          {
-            path: "details/:id",
-            element: <ContractDetail />,
-          },
-        ],
+        path: "contracts",
+        element: <Contracts />, //table list all
+      },
+      {
+        path: "contracts/detail",
+        element: <ContractDetail />, //detail of a contract for approve or denied
       },
     ],
   },

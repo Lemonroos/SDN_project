@@ -7,7 +7,7 @@ const AppFooter = () => {
   return (
     <Footer
       style={{
-        backgroundColor: "#101010", // A dark shade for the footer
+        backgroundColor: "#202020", // A dark shade for the footer
         color: "#fff",
         textAlign: "center", // Centers the text
         lineHeight: "15px", // Adjusts the line height for vertical alignment

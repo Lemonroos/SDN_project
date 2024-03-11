@@ -1,14 +1,28 @@
 import React, { useState } from 'react';
 import { Form, Input, Button, Checkbox } from 'antd';
 import { Link } from 'react-router-dom';
+import axios from 'axios'
 const Login = () => {
   const [loading, setLoading] = useState(false);
-
-  const onFinish = (values) => {
+  // const navigate = useNavigate()
+  const onFinish = async (values) => {
     setLoading(true);
-    console.log('Received values of form: ', values);
     // Here you can add your login logic
     // For example, you can make an API call to authenticate the user
+    await axios.post('http://localhost:5000/auth/user/signin', values, {withCredentials: true})
+    .then((res) => {
+      if(res.data.role === 'Manager'){
+        alert('Login successfully')
+        window.location = '/manager'
+      }
+      else{
+        alert('Login successsfully')
+        window.location = '/'
+      }
+    })
+    .catch((error) => {
+      alert(error.response.data)
+    })
     setTimeout(() => {
       setLoading(false);
     }, 2000);
@@ -28,9 +42,9 @@ const Login = () => {
         style={{ width: 300 }}
       >
         <Form.Item
-          label="Username"
-          name="username"
-          rules={[{ required: true, message: 'Please input your username!' }]}
+          label="Email"
+          name="email"
+          rules={[{ required: true, message: 'Please input your email!' }]}
         >
           <Input />
         </Form.Item>

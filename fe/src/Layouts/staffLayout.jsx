@@ -1,13 +1,15 @@
 import React from "react";
 import { Outlet } from "react-router-dom";
 import AppHeader from "../Components/header";
-// import SiderComponent from "../Components/sider";
+import SiderComponent from "../Components/sider";
+// import Sider from "../Components/sider";
 import AppFooter from "../Components/footer";
-export default function AdminLayout() {
+export default function staffLayout() {
   return (
     <>
-      <AppHeader />
-      {/* <SiderComponent /> */}
+      {/* <AppHeader /> */}
+      <SiderComponent />
+      {/* <Sider/> */}
       <Outlet />
       <AppFooter />
     </>

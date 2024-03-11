@@ -1,14 +1,28 @@
 import React, { useState } from "react";
-import { Form, Input, Button } from "antd";
-
+import { Form, Input, Button, Select } from "antd";
+import {useNavigate} from 'react-router-dom'
+import axios from 'axios'
 const Register = () => {
+  const { Option } = Select;
+ const navigate = useNavigate()
+const currentYear = new Date().getFullYear();
+const years = Array.from({length: 100}, (_, i) => currentYear - i);
   const [loading, setLoading] = useState(false);
-
   const onFinish = (values) => {
     setLoading(true);
     console.log("Received values of form: ", values);
     // Here you can add your registration logic
     // For example, you can make an API call to register the user
+    axios.post('http://localhost:5000/auth/user/register', values)
+    .then((res) => {
+      alert(res.data)
+      navigate('/login')
+    })
+    .catch((error) => {
+      if (error.response && error.response.data) {
+        alert(error.response.data);
+      }
+    });
     setTimeout(() => {
       setLoading(false);
     }, 2000);
@@ -34,37 +48,12 @@ const Register = () => {
         style={{ width: 300 }}
       >
         <Form.Item
-          label="Name"
-          name="name"
-          rules={[{ required: true, message: "Please input your name!" }]}
-        >
-          <Input />
-        </Form.Item>
-        <Form.Item
-          label="YOB"
-          name="yob"
-          rules={[
-            { required: true, message: "Please input your year of birth!" },
-          ]}
-        >
-          <Input />
-        </Form.Item>
-        <Form.Item
           label="Email"
           name="email"
           rules={[{ required: true, message: "Please input your email!" }]}
         >
           <Input />
         </Form.Item>
-
-        <Form.Item
-          label="Phone"
-          name="phone"
-          rules={[{ required: true, message: "Please input your phone!" }]}
-        >
-          <Input />
-        </Form.Item>
-
         <Form.Item
           label="Password"
           name="password"
@@ -93,6 +82,35 @@ const Register = () => {
         >
           <Input.Password />
         </Form.Item>
+        <Form.Item
+          label="Name"
+          name="name"
+          rules={[{ required: true, message: "Please input your name!" }]}
+        >
+          <Input />
+        </Form.Item>
+        <Form.Item
+          label="YOB"
+          name="YOB"
+          rules={[
+            { required: true, message: "Please choose a year" },
+          ]}
+        >
+          <Select>
+      {years.map(year => <Option key={year} value={year}>{year}</Option>)}
+    </Select>
+        </Form.Item>
+        
+
+        <Form.Item
+          label="Phone"
+          name="phone"
+          rules={[{ required: true, message: "Please input your phone!" }]}
+        >
+          <Input />
+        </Form.Item>
+
+        
 
         <Form.Item>
           <Button type="primary" htmlType="submit" loading={loading}>

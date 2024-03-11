@@ -13,14 +13,21 @@ const Home = () => {
 
   return (
     <Layout className="layout">
-      <Header>{/* Header goes here */}</Header>
       <Content style={{ padding: "0 50px" }}>
-        <Carousel autoplay>
+        <Carousel autoplay style={{ display: 'flex', justifyContent: 'center' }}>
           <div>
-            <img src="image1.jpg" alt="Civil Housing" />
+            <img
+              src="https://i.pinimg.com/originals/bb/7a/00/bb7a00b1cdccd419d6bad81cc2707669.jpg"
+              alt="Civil Housing"
+              style={{ width: "800px", height: "400px", objectFit: "cover" }}
+            />
           </div>
           <div>
-            <img src="image2.jpg" alt="Civil Housing" />
+            <img
+              src="https://i.pinimg.com/originals/bb/7a/00/bb7a00b1cdccd419d6bad81cc2707669.jpg"
+              alt="Civil Housing"
+              style={{ width: "800px", height: "400px", objectFit: "cover" }}
+            />
           </div>
           {/* Add more images as needed */}
         </Carousel>
@@ -39,10 +46,16 @@ const Home = () => {
           <Title level={2}>Meet the Creators</Title>
           <Carousel dots={false} autoplay>
             <div>
-              <img src="creator1.jpg" alt="Creator" />
+              <img
+                src="https://media.licdn.com/dms/image/D4E03AQFaljxqA7pFRQ/profile-displayphoto-shrink_800_800/0/1686647371933?e=2147483647&v=beta&t=RbNTbQLUsJUVP439M8jKxI8gM6tF3WEOJ3BCkYGHzEk"
+                alt="Creator"
+              />
             </div>
             <div>
-              <img src="creator2.jpg" alt="Creator" />
+              <img
+                src="https://media.licdn.com/dms/image/D4E03AQFaljxqA7pFRQ/profile-displayphoto-shrink_800_800/0/1686647371933?e=2147483647&v=beta&t=RbNTbQLUsJUVP439M8jKxI8gM6tF3WEOJ3BCkYGHzEk"
+                alt="Creator"
+              />
             </div>
             {/* Add more creator images as needed */}
           </Carousel>
