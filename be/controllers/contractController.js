@@ -19,18 +19,18 @@ class ContractController {
   checkIfProjectExists(req, res, next) {
     const projectId = req.query.projectId;
     Contracts.find({ user: req.user.id })
-    .populate({
-      path: "quote",
-      populate: { path: "project" },
-    })
+      .populate({
+        path: "quote",
+        populate: { path: "project" },
+      })
       .then((contracts) => {
         let flag = false;
         contracts.forEach((contract) => {
           if (contract.quote.project._id.toString() === projectId.toString()) {
-          flag = true;
+            flag = true;
           }
-        })
-        return res.status(200).json(flag);
+          return res.status(200).json(flag);
+        });
       })
       .catch((error) => {
         console.log(error);

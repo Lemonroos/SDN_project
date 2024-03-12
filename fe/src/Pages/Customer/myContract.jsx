@@ -2,6 +2,7 @@ import { React, useEffect, useState } from "react";
 import { Table, Button, Space } from "antd";
 import { Link } from "react-router-dom";
 import axios from "axios";
+import { formatCurrency, formatNumber } from "../../Config/utils";
 export default function MyContract() {
   const [contracts, setContracts] = useState([]);
   useEffect(() => {
@@ -31,6 +32,7 @@ export default function MyContract() {
       title: "Total",
       dataIndex: ["quote", "total"],
       key: "quote.total",
+      render: total => formatCurrency(total),
     },
     {
       title: "Status",
@@ -62,9 +64,8 @@ export default function MyContract() {
 
   return (
     <div style={{ padding: "20px", paddingTop: "60px", paddingBottom: "60px" }}>
-      <Space style={{ marginBottom: "20px" }}>
-      </Space>
-      <Table columns={columns} dataSource={data} pagination={false}/>
+      <Space style={{ marginBottom: "20px" }}></Space>
+      <Table columns={columns} dataSource={data} pagination={false} />
     </div>
   );
 }

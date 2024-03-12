@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
-import { Layout, Menu, Dropdown, Button } from "antd";
-import { Link, useLocation  } from "react-router-dom";
+import { Layout, Menu, Dropdown, Button, message } from "antd";
+import { Link, useLocation } from "react-router-dom";
 import {
   HomeOutlined,
   InfoCircleOutlined,
@@ -16,10 +16,12 @@ const { Header } = Layout;
 const AppHeader = () => {
   const [user, setUser] = useState(null);
   const location = useLocation();
-  const [selectedKey, setSelectedKey] = useState(sessionStorage.getItem('activeMenu') || '1');
+  const [selectedKey, setSelectedKey] = useState(
+    sessionStorage.getItem("activeMenu") || "1"
+  );
 
   useEffect(() => {
-    sessionStorage.setItem('activeMenu', selectedKey);
+    sessionStorage.setItem("activeMenu", selectedKey);
   }, [selectedKey]);
 
   useEffect(() => {
@@ -54,12 +56,12 @@ const AppHeader = () => {
     axios
       .get("http://localhost:5000/auth/user/logout", { withCredentials: true })
       .then((res) => {
-        alert(res.data);
+        message.success(res.data);
         localStorage.setItem("success", "false");
         window.location = "/";
       })
       .catch((error) => {
-        alert(error.data);
+        message.error(error.data);
       });
   };
   const userMenu = (
@@ -104,13 +106,18 @@ const AppHeader = () => {
         <img
           src="/shared/homelogo.png"
           alt="house"
-          style={{ width: "100%", height: "auto", paddingTop: "20px" }}/>
+          style={{ width: "100%", height: "auto", paddingTop: "20px" }}
+        />
       </div>
       <Menu
         theme="dark"
         mode="horizontal"
         selectedKeys={[selectedKey]}
-        style={{flex: 1,justifyContent: "center",backgroundColor: "#202020",}}
+        style={{
+          flex: 1,
+          justifyContent: "center",
+          backgroundColor: "#202020",
+        }}
         onClick={({ key }) => setSelectedKey(key)}
       >
         <Menu.Item key="/" icon={<HomeOutlined />}>
@@ -139,7 +146,9 @@ const AppHeader = () => {
       </Menu>
       {user ? (
         <Dropdown overlay={userMenu}>
-          <div style={{display: "flex", alignItems: "center",cursor: "pointer",}}>
+          <div
+            style={{ display: "flex", alignItems: "center", cursor: "pointer" }}
+          >
             <span style={{ color: "#fff", marginLeft: "10px" }}>
               Welcome, {user.name}
             </span>
@@ -148,7 +157,12 @@ const AppHeader = () => {
       ) : (
         <Dropdown overlay={userMenu}>
           <Button
-            style={{backgroundColor: "#101010",borderColor: "#101010",color: "#fff",}}>
+            style={{
+              backgroundColor: "#101010",
+              borderColor: "#101010",
+              color: "#fff",
+            }}
+          >
             Login / Register <UserOutlined />
           </Button>
         </Dropdown>

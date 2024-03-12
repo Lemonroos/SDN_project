@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Form, Input, Button, Select,Card } from "antd";
+import { Form, Input, Button, Select,Card,message } from "antd";
 import {useNavigate} from 'react-router-dom'
 import axios from 'axios'
 const Register = () => {
@@ -10,17 +10,16 @@ const years = Array.from({length: 100}, (_, i) => currentYear - i);
   const [loading, setLoading] = useState(false);
   const onFinish = (values) => {
     setLoading(true);
-    console.log("Received values of form: ", values);
     // Here you can add your registration logic
     // For example, you can make an API call to register the user
     axios.post('http://localhost:5000/auth/user/register', values)
     .then((res) => {
-      alert(res.data)
+      message.success(res.data)
       navigate('/login')
     })
     .catch((error) => {
       if (error.response && error.response.data) {
-        alert(error.response.data);
+       message.error(error.response.data);
       }
     });
     setTimeout(() => {
@@ -42,6 +41,7 @@ const years = Array.from({length: 100}, (_, i) => currentYear - i);
       }}
     >
       <Card>
+      <h2 style={{ textAlign: 'center', marginBottom: 20, color: '#333' }}>Welcome</h2>
       <Form
         name="register"
         onFinish={onFinish}

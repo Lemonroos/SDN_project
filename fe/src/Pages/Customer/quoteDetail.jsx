@@ -7,6 +7,7 @@ import {
   Statistic,
   List,
   Divider,
+  message,
 } from "antd";
 import { Link, useParams } from "react-router-dom";
 import axios from "axios";
@@ -32,12 +33,12 @@ export default function QuoteDetail() {
   const createContract = async() => {
     await axios.post('http://localhost:5000/contracts', {quote: id}, {withCredentials: true})
     .then((res) => {      
-        alert('Create successfully')
+        message.success('Create successfully')
         const contractId = res.data._id
         window.location = (`/mycontracts/detail/${contractId}`)
     }
     ).catch((err) => {
-      alert(err.response.data)
+      message.error(err.response.data)
     })
   }
 
@@ -83,8 +84,8 @@ export default function QuoteDetail() {
               title={`Item ${index + 1}: ${item.constructionItem.name}`}
               description={item.constructionItem.description}
             />
-            <div>Quantity: {item.quantity}</div>
-            <div style={{ margin: "10px" }}>Item Cost: {item.itemCost}</div>
+            <div>Quantity: {item.quantity}item(s)</div>
+            <div style={{ margin: "10px" }}>Item Cost: {item.itemCost}₫</div>
           </List.Item>
         )}
       />
@@ -103,10 +104,10 @@ export default function QuoteDetail() {
       <Divider />
       <Card style={{ marginBottom: "20px" }}>
         <Descriptions title={quote.project.name}>
-          <Descriptions.Item label="Total">{quote.total}</Descriptions.Item>
+          <Descriptions.Item label="Total">{quote.total}₫</Descriptions.Item>
         </Descriptions>
       </Card>
-      <Button onClick={createContract}>Create Contract</Button>
+      <Button type="primary" onClick={createContract}>Create Contract</Button>
     </div>
   );
 }

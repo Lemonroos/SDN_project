@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react';
-import { Form, Input, Button, DatePicker, InputNumber, Space, Select, List } from 'antd';
+import { Form, Input, Button, DatePicker, InputNumber, Space, Select, List, message } from 'antd';
 import { MinusCircleOutlined, PlusOutlined } from '@ant-design/icons';
 import { useParams } from 'react-router-dom';
 import axios from 'axios';
@@ -59,11 +59,11 @@ const UpdateProject = () => {
     axios.put(`http://localhost:5000/projects/${id}`, values, {withCredentials: true})
     .then((res) => {
       const id = res.data._id
-      alert('Updated successfully')
+      message.success('Updated successfully')
       window.location = (`/quote/${id}`)
     })
     .catch((error) => {
-      alert(error.response)
+      message.error(error.response)
     })
   };
 
@@ -95,7 +95,7 @@ const UpdateProject = () => {
 
       <Form.Item
         name="area"
-        label="Area"
+        label="Area(m²)"
         rules={[{ required: true, message: 'Missing area' }]}
       >
         <InputNumber />

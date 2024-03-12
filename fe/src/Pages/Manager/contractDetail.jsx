@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from "react";
-import { Descriptions, Card, Table, Button } from "antd";
+import { Descriptions, Card, Table, Button, message } from "antd";
 import { useParams } from "react-router-dom";
 import axios from "axios";
 import MySpin from "../../Components/UI/spin";
+import {formatCurrency,formatNumber} from "../../Config/utils";
 export default function ContractDetail() {
   const { id } = useParams();
   const [contract, setContract] = useState();
@@ -22,48 +23,54 @@ export default function ContractDetail() {
   }, [id]);
 
   const accept = async() => {
-    await axios.put(`http://localhost:5000/contracts/${id}`, {status: 1})
+    await axios.put(`http://localhost:5000/contracts/${id}`, {status: 1}, {withCredentials: true})
     .then((res) => {
-      alert(res.data)
+      message.success(res.data)
       window.location = `/manager/contracts/detail/${id}`
     })
     .catch((error) => {
-      alert(error.data);
+      message.error(error.response.data);
     });
   }
   const decline = async() => {
-    await axios.put(`http://localhost:5000/contracts/${id}`, {status: 3})
+    await axios.put(`http://localhost:5000/contracts/${id}`, {status: 3}, {withCredentials: true})
     .then((res) => {
-      alert(res.data)
+      message.success(res.data)
       window.location = `/manager/contracts/detail/${id}`
     })
     .catch((error) => {
-      alert(error.data)
+      message.error(error.response.data)
     })
   }
 
-  const columns = [
-    {
-      title: "Name",
-      dataIndex: ["constructionItem", "name"],
-      key: ["constructionItem", "name"],
-    },
-    {
-      title: "Value",
-      dataIndex: ["constructionItem", "value"],
-      key: ["constructionItem", "value"],
-    },
-    {
-      title: "Quantity",
-      dataIndex: "quantity",
-      key: "quantity",
-    },
-    {
-      title: "Item cost",
-      dataIndex: "itemCost",
-      key: "itemCost",
-    },
-  ];
+  
+
+const columns = [
+  {
+    title: "Name",
+    dataIndex: ["constructionItem", "name"],
+    key: ["constructionItem", "name"],
+  },
+  {
+    title: "Value",
+    dataIndex: ["constructionItem", "value"],
+    key: ["constructionItem", "value"],
+    render: value => `${formatNumber(value)} ₫/item`,
+  },
+  {
+    title: "Quantity",
+    dataIndex: "quantity",
+    key: "quantity",
+    render: quantity => `${formatNumber(quantity)} items`,
+  },
+  {
+    title: "Item cost",
+    dataIndex: "itemCost",
+    key: "itemCost",
+    render: itemCost => formatCurrency(itemCost),
+  },
+];
+
   if (!contract) {
     return <MySpin />;
   }
@@ -96,8 +103,8 @@ export default function ContractDetail() {
           <Descriptions.Item label="Project Name">
             {contract.quote.project.name}
           </Descriptions.Item>
-          <Descriptions.Item label="Area to Build">
-            {contract.quote.project.area}
+          <Descriptions.Item label="Area to Build(m²)">
+            {contract.quote.project.area}m²
           </Descriptions.Item>
           <Descriptions.Item label="Number of Floors">
             {contract.quote.project.floors}

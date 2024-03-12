@@ -1,6 +1,6 @@
 const express = require("express");
 const contractController = require("../controllers/contractController");
-const {verifyToken} = require("../config/verify");
+const {verifyToken, verifyManager} = require("../config/verify");
 
 const contractRouter = express.Router();
 contractRouter
@@ -13,7 +13,7 @@ contractRouter
 contractRouter
   .route("/:Id")
   .get(contractController.getById)
-  .put(contractController.updateById);
+  .put(verifyManager, contractController.updateById);
 contractRouter
   .route("/my-contracts/contracts-by-user")
   .get(verifyToken,contractController.getByUserId);

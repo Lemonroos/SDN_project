@@ -11,13 +11,13 @@ const verifyToken = (req, res, next) => {
       res.status(403).json("Token is not valid!");
     }
     req.user = user;
-    next()
+    next();
   });
 };
 
-const verifyStaff = (req, res, next) => {
+const verifyManager = (req, res, next) => {
   verifyToken(req, res, () => {
-    if (req.user.role === "Staff") {
+    if (req.user.role === "Manager") {
       next();
     } else {
       return res.status(403).json("You are not authorized");
@@ -25,18 +25,17 @@ const verifyStaff = (req, res, next) => {
   });
 };
 
-const verifyAdmin = (req, res, next) => {
-    verifyToken(req, res, () => {
-    if (req.user.role === "Admin") {
-      next();
-    } else {
-      return res.status(403).json("You are not authorized");
-    }
-  });
-};
-
+// const verifyUser = (req, res, next) => {
+//   verifyToken(req, res, () => {
+//     if (req.user.id === req.query.userId) {
+//       return next();
+//     }else {
+//       return res.status(403).json("You are not authorized");
+//     }
+//   });
+// };
 module.exports = {
   verifyToken: verifyToken,
-  verifyStaff: verifyStaff,
-  verifyAdmin: verifyAdmin,
+  verifyManager: verifyManager,
+  // verifyUser: verifyUser
 };

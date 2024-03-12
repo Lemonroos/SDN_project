@@ -7,10 +7,12 @@ import {
   Statistic,
   List,
   Divider,
+  message,
 } from "antd";
 import { Link, useParams } from "react-router-dom";
 import axios from "axios";
 import MySpin from "../Components/UI/spin";
+import { formatCurrency, formatNumber } from "../Config/utils";
 export default function ProjectDetail() {
   const { id } = useParams();
   const [project, setProject] = useState();
@@ -30,7 +32,8 @@ export default function ProjectDetail() {
     const checkIfProjectIsInContract = async () => {
       await axios
         .get(
-          `http://localhost:5000/contracts/check-if-project-exists?projectId=${id}`, {withCredentials: true}
+          `http://localhost:5000/contracts/check-if-project-exists?projectId=${id}`,
+          { withCredentials: true }
         )
         .then((res) => {
           setExistContract(res.data);
@@ -42,21 +45,22 @@ export default function ProjectDetail() {
     getProject();
     checkIfProjectIsInContract();
   }, [id]);
+  console.log(existContract)
   if (!project) {
     return <MySpin />;
   }
 
-  const deleteProject = async() => {
-    await axios.delete(`http://localhost:5000/projects/${id}`, {withCredentials: true})
-    .then((res) => {
-      alert(res.data)
-      window.location = '/projects'
-    })
-    .catch((err) => {
-      alert(err.response.data)
-    });
-  }
-
+  const deleteProject = async () => {
+    await axios
+      .delete(`http://localhost:5000/projects/${id}`, { withCredentials: true })
+      .then((res) => {
+        message.success(res.data);
+        window.location = "/projects";
+      })
+      .catch((err) => {
+        message.error(err.response.data);
+      });
+  };
   return (
     <>
       <div
@@ -75,7 +79,9 @@ export default function ProjectDetail() {
             <Descriptions.Item label="Location">
               {project.location}
             </Descriptions.Item>
-            <Descriptions.Item label="Area">{project.area}</Descriptions.Item>
+            <Descriptions.Item label="Area(m²)">
+              {formatNumber(project.area)}
+            </Descriptions.Item>
             <Descriptions.Item label="Floors">
               {project.floors}
             </Descriptions.Item>
@@ -91,12 +97,12 @@ export default function ProjectDetail() {
         <Card>
           <Statistic
             title="Package Cost"
-            value={project.packageCost}
+            value={formatCurrency(project.packageCost)}
             style={{ margin: "20px" }}
           />
           <Statistic
             title="Total Items Cost"
-            value={project.totalItemsCost}
+            value={formatCurrency(project.totalItemsCost)}
             style={{ margin: "20px" }}
           />
         </Card>
@@ -112,8 +118,10 @@ export default function ProjectDetail() {
                   title={`Item ${index + 1}: ${item.constructionItem.name}`}
                   description={item.constructionItem.description}
                 />
-                <div>Quantity: {item.quantity}</div>
-                <div style={{ margin: "10px" }}>Item Cost: {item.itemCost}</div>
+                <div>Quantity: {formatNumber(item.quantity)}item(s)/</div>
+                <div style={{ margin: "10px" }}>
+                  Item Cost: {formatCurrency(item.itemCost)}
+                </div>
               </List.Item>
             )}
           />
@@ -122,9 +130,15 @@ export default function ProjectDetail() {
         {!existContract && (
           <>
             <Link to={`/projects/update/${id}`}>
-              <Button>Update</Button>
+              <Button type="primary">Update</Button>
             </Link>
-            <Button onClick={deleteProject}>Delete</Button>
+            <Button
+              style={{ marginLeft: "10px" }}
+              danger
+              onClick={deleteProject}
+            >
+              Delete
+            </Button>
           </>
         )}
       </div>

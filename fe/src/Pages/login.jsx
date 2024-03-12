@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
-import { Form, Input, Button, Checkbox, Card } from 'antd';
+import { Form, Input, Button, Checkbox, Card,Alert } from 'antd';
 import { Link } from 'react-router-dom';
 import axios from 'axios'
+import { message } from 'antd';
+
 const Login = () => {
   const [loading, setLoading] = useState(false);
   // const navigate = useNavigate()
@@ -12,16 +14,16 @@ const Login = () => {
     await axios.post('http://localhost:5000/auth/user/signin', values, {withCredentials: true})
     .then((res) => {
       if(res.data.role === 'Manager'){
-        alert('Login successfully')
+        message.success('Login successfully');
         window.location = '/manager'
       }
       else{
-        alert('Login successsfully')
+        message.success('Login successfully');
         window.location = '/'
       }
     })
     .catch((error) => {
-      alert(error.response.data)
+      message.error(error.response.data)
     })
     setTimeout(() => {
       setLoading(false);
@@ -34,7 +36,9 @@ const Login = () => {
 
   return (
     <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
+      {/* <Alert message="Success Text" type="success" /> */}
        <Card >
+       <h2 style={{ textAlign: 'center', marginBottom: 20, color: '#333' }}>Welcome</h2>
       <Form
         name="basic"
         initialValues={{ remember: true }}
